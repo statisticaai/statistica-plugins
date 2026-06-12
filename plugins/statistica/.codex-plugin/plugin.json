@@ -1,11 +1,12 @@
 {
   "name": "statistica-ai",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Run Statistica AI — deep financial research and data science — from inside Codex.",
   "author": {
     "name": "Statistica AI"
   },
   "homepage": "https://www.statistica.ai",
   "license": "Apache-2.0",
-  "mcpServers": "./.mcp.codex.json"
+  "mcpServers": "./.mcp.codex.json",
+  "skills": "./skills/"
 }
