@@ -1,6 +1,6 @@
 {
   "name": "statistica-ai",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Run Statistica AI — deep financial research and data science — from inside Codex.",
   "author": {
     "name": "Statistica AI"

@@ -20,7 +20,7 @@ own account. Usage counts toward your Statistica plan.
 
 ```bash
 /plugin marketplace add statisticaai/statistica-plugins
-/plugin install statistica-ai@statistica
+/plugin install statistica-ai@statistica-plugins
 ```
 
 **Codex**
