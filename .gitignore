@@ -1,0 +1,9 @@
+# Local-only internal notes (never published)
+docs/internal/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store

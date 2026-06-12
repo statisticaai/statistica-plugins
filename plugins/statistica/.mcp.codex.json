@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "statistica-ai": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["scripts/mcp-server.mjs"],
+      "cwd": "."
+    }
+  }
+}
