@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Run Statistica AI — deep financial research and data science — from inside Claude Code or Codex.",
-    "version": "0.1.1"
+    "version": "0.1.2"
   },
   "plugins": [
     {
       "name": "statistica-ai",
       "description": "Delegate financial research and analysis to the Statistica AI agent, billed to your Statistica subscription.",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "author": {
         "name": "Statistica AI"
       },
