@@ -41,6 +41,11 @@ export async function askStatistica({ query, threadId, signal } = {}) {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        // Identifies this as the first-party plugin. Analytics use this to
+        // separate plugin from CLI traffic; the server may additionally
+        // require it (CLI_REQUIRE_CLIENT_HEADER) to turn away out-of-band
+        // callers. Not a credential — never treat it as one.
+        "x-statistica-client": "plugin",
       },
       body: JSON.stringify(body),
       signal,
