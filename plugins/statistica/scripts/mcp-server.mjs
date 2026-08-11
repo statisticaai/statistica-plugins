@@ -11,10 +11,18 @@
  * stays dependency-free and runs the moment it is cloned — no `npm install`.
  */
 import process from "node:process";
-import { askStatistica } from "./lib/agent-client.mjs";
+import { askStatistica, PLUGIN_VERSION } from "./lib/agent-client.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
-const SERVER_INFO = { name: "statistica-ai", version: "0.1.0" };
+// Single source of truth: PLUGIN_VERSION is read from plugin.json by
+// agent-client.mjs at module load. Do NOT hardcode a version here — a
+// hardcoded value drifts (this one sat at 0.1.0 for four releases). If the
+// read fails, fall back to "0.0.0" rather than inventing a plausible-looking
+// number.
+const SERVER_INFO = {
+  name: "statistica-ai",
+  version: PLUGIN_VERSION ?? "0.0.0",
+};
 
 const ASK_STATISTICA_TOOL = {
   name: "ask_statistica",

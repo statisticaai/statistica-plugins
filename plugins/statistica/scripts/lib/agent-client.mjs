@@ -15,7 +15,7 @@ const AGENT_PATH = "/api/cli/proxy/agent";
  * version header, which the server treats as unverifiable (and therefore
  * rejects once a minimum is configured) — the safe direction.
  */
-const PLUGIN_VERSION = readPluginVersion();
+export const PLUGIN_VERSION = readPluginVersion();
 
 function readPluginVersion() {
   try {
@@ -142,7 +142,10 @@ function httpErrorMessage(status, detail) {
     case 426:
       return (
         detail ??
-        "Your Statistica plugin is out of date. Update it with: `/plugin update statistica-ai`"
+        "Your Statistica plugin is out of date. In Claude Code run: " +
+          "`/plugin marketplace update statistica-plugins` — or from a " +
+          "terminal: `claude plugin update statistica-ai`. Details: " +
+          "https://www.statistica.ai/statistica-plugins"
       );
     default:
       return `Statistica agent request failed (HTTP ${status})${suffix}`;
