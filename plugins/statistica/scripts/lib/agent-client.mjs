@@ -1,6 +1,32 @@
 import { loadCredentials } from "./credentials.mjs";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 
 const AGENT_PATH = "/api/cli/proxy/agent";
+
+/**
+ * This plugin's version, read from plugin.json — the single source of truth
+ * the marketplace also publishes. Read rather than hardcoded so the two can
+ * never drift apart.
+ *
+ * Sent as `x-statistica-client-version` so the server can enforce a minimum
+ * version without another breaking change. If the read fails we send no
+ * version header, which the server treats as unverifiable (and therefore
+ * rejects once a minimum is configured) — the safe direction.
+ */
+const PLUGIN_VERSION = readPluginVersion();
+
+function readPluginVersion() {
+  try {
+    const here = dirname(fileURLToPath(import.meta.url));
+    const manifest = join(here, "..", "..", ".claude-plugin", "plugin.json");
+    const parsed = JSON.parse(readFileSync(manifest, "utf8"));
+    return typeof parsed?.version === "string" ? parsed.version : null;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * @typedef {Object} AskResult
@@ -42,10 +68,13 @@ export async function askStatistica({ query, threadId, signal } = {}) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
         // Identifies this as the first-party plugin. Analytics use this to
-        // separate plugin from CLI traffic; the server may additionally
-        // require it (CLI_REQUIRE_CLIENT_HEADER) to turn away out-of-band
-        // callers. Not a credential — never treat it as one.
+        // separate plugin from CLI traffic; the server also requires it and
+        // rejects unidentified callers with 426. Not a credential — never
+        // treat it as one.
         "x-statistica-client": "plugin",
+        ...(PLUGIN_VERSION
+          ? { "x-statistica-client-version": PLUGIN_VERSION }
+          : {}),
       },
       body: JSON.stringify(body),
       signal,
@@ -110,6 +139,11 @@ function httpErrorMessage(status, detail) {
       return "Out of credits. Top up your Statistica plan to continue.";
     case 403:
       return "An active Statistica subscription is required.";
+    case 426:
+      return (
+        detail ??
+        "Your Statistica plugin is out of date. Update it with: `/plugin update statistica-ai`"
+      );
     default:
       return `Statistica agent request failed (HTTP ${status})${suffix}`;
   }
